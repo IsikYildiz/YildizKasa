@@ -1,0 +1,359 @@
+@{
+    Layout = "_Layout";
+}
+@model KullaniciBilgi
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesabım</title>
+    <style>
+        body {
+            background-color: #4D527F;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #2C3E50;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid #6FA68F;
+            padding-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #6FA68F;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #4D527F;
+            box-shadow: 0 0 8px rgba(111, 166, 143, 0.4);
+        }
+
+        .button {
+            background-color: #6FA68F;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 200px;
+            text-align: center;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .button:hover {
+            background-color: #5B8B76;
+            transform: translateY(-2px);
+        }
+
+        .buttonDel {
+            background-color: #DC3545;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 200px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .buttonDel:hover {
+            background-color: #C82333;
+        }
+
+        .credit-card {
+            background: linear-gradient(135deg, #4D527F, #6FA68F);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            margin: 20px 0;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .credit-card img {
+            width: 60px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .credit-card p {
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-top: 50px;
+        }
+
+        .warning {
+            color: #DC3545;
+            background: #FFE5E8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2C3E50;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        margin: 0;
+        border: 2px solid #6FA68F;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #4D527F;
+        box-shadow: 0 0 8px rgba(111, 166, 143, 0.4);
+    }
+
+    .form-group:hover .form-label {
+        color: #6FA68F;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="button" onclick="Siparisler(event)">Siparisler</button>
+        <button class="buttonDel" onclick="endSession(event)">Çıkış Yap</button>
+    <div class="section">
+    <h2 class="section-title">Kullanıcı Bilgileri</h2>
+    <label id="Uyarı" class="warning"></label>
+    <form>
+        <div class="form-group">
+            <label for="name" class="form-label">Ad</label>
+            <input id="name" type="text" class="input-field" value="@Model.Kullanicilars.Ad" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="surname" class="form-label">Soyad</label>
+            <input id="surname" type="text" class="input-field" value="@Model.Kullanicilars.Soyad" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="email" class="input-field" value="@Model.Kullanicilars.Email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password" class="form-label">Şifre</label>
+            <input id="password" type="password" class="input-field" value="@Model.Kullanicilars.Sifre" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="adress1" class="form-label">Birincil Adres</label>
+            <input id="adress1" type="text" class="input-field" value="@Model.Kullanicilars.Adres1" placeholder="Adres 1">
+        </div>
+        
+        <div class="form-group">
+            <label for="adress2" class="form-label">İkincil Adres</label>
+            <input id="adress2" type="text" class="input-field" value="@Model.Kullanicilars.Adres2" placeholder="Adres 2">
+        </div>
+        
+        <button class="button" onclick="changeUser(event)">Bilgileri Güncelle</button>
+    </form>
+    </div>
+
+        <div class="section">
+            <h2 class="section-title">Kayıtlı Kartlar</h2>
+            @foreach(Kredikartlari kart in @Model.Kredikartlaris){
+                <div class="credit-card">
+                    <img src="/css/CreditCard.jpg" alt="Kredi Kartı">
+                    <p>@("*".PadLeft(kart.KartNo.Length - 4, '*') + kart.KartNo.Substring(kart.KartNo.Length - 4))</p>
+                    <button class="button" onclick="delKrediKarti(event,'@kart.KartId')">Kartı Sil</button>
+                </div>
+            }
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Yeni Kart Ekle</h2>
+            <label id="UyarıKart" class="warning"></label>
+            <form>
+                <input id="cardNo" type="text" class="input-field" placeholder="Kart No" required>
+                <input id="cardDate" type="text" class="input-field" placeholder="Son Geçerlilik Tarihi (örn: 2029-11-31)" required>
+                <input id="cardName" type="text" class="input-field" placeholder="Kart Sahip İsmi" required>
+                <button class="button" onclick="addKrediKarti(event)">Kredi Kartı Ekle</button>
+            </form>
+        </div>
+
+        <button class="buttonDel" onclick="delUser(event)">Hesabı Sil</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+    <script>
+        async function Siparisler(event){
+            event.preventDefault();
+            window.location.href = `http://localhost:5173/TransactionPage/Siparisler`;
+        }
+
+        async function endSession(event){
+            event.preventDefault();
+            window.location.href = `http://localhost:5173/HomePage/endSession`;
+        }
+
+        async function delKrediKarti(event,kartid){
+            event.preventDefault();
+            window.location.href = `http://localhost:5173/LoginPage/delcard?cardId=${kartid}`;
+        }
+
+        async function addKrediKarti(event){
+            event.preventDefault();
+
+            const cardNo = document.getElementById("cardNo").value;
+            const cardDate = document.getElementById("cardDate").value;
+            const cardName = document.getElementById("cardName").value;
+            const warningLabel = document.getElementById("UyarıKart");
+            const hasNumber = /\d/;
+
+            if(cardNo.length!=16 || !hasNumber.test(cardNo)){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Kartı numaranız hatalı';
+                return;
+            }
+            else if(hasNumber.test(cardName) || cardName.length<1){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Kart sahip ismi hatalı';
+                return;
+            }
+            else if(cardDate.length<1){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Kartın son geçerlilik tarihi hatalı';
+                return;
+            }
+            var jsonData={"KartNo":cardNo,"SonGecerlilikTarihi":cardDate,"KartSahipIsmi":cardName}
+            fetch("http://localhost:5173/LoginPage/addcard",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData) 
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                if(result.message==="success"){
+                    window.location.href = "http://localhost:5173/HomePage/index";
+                }
+            })
+
+        }
+
+        async function changeUser(event){
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const surname = document.getElementById("surname").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const adress1 = document.getElementById("adress1").value;
+            const adress2 = document.getElementById("adress2").value;
+            const warningLabel = document.getElementById("Uyarı");
+            hasNumber = /\d/;
+            const passwordResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${password}&which=sifre`);
+            const passwordExists = await passwordResponse.json();
+            const emailResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${email}&which=email`);
+            const emailExists = await emailResponse.json();
+            
+            if(hasNumber.test(name) || hasNumber.test(surname)){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Adınız veya soyadınız sayı içeremez.';
+                return;
+                
+            }
+            else if(name.length<1 || surname.length<1 || email.length<1){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Adres dışındaki yerler boş kalamaz';
+                return;
+            }
+            else if(password.length<10){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Şifreniz 10 dan az karakter içeriyor';
+                return;
+            }
+            else if(passwordExists && password!=="@Model.Kullanicilars.Sifre"){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Böyle bir şifre zaten var';
+                return;
+            }
+            else if(emailExists && email!=="@Model.Kullanicilars.Email"){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Bu email zaten kayıtlı';
+                return;
+            }
+            var jsonData={"ad":name,"soyad":surname,"email":email,"sifre":password,"adres1":adress1,"adres2":adress2,"kullaniciNo":@Model.Kullanicilars.KullaniciNo}
+            fetch("http://localhost:5173/LoginPage/upduser",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData) 
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                if(result.message==="success"){
+                    window.location.href = "http://localhost:5173/HomePage/index";
+                }
+            })
+        }
+
+        async function delUser(event){
+            event.preventDefault();
+            await fetch(`http://localhost:5173/LoginPage/deluser?No=${@Model.Kullanicilars.KullaniciNo}`)
+            .then(response => response.json()) 
+            .then(result => {
+                if(result.message==="success"){
+                    window.location.href = "http://localhost:5173/HomePage/index";
+                }
+            })
+        }
+    </script>
+</body>
+</html>

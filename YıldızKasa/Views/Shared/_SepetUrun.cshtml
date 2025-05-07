@@ -1,0 +1,107 @@
+@model Sepeturun2
+
+<!DOCTYPE html>
+<html lang="tr"
+<head>
+    <style>
+    .cart-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .cart-item img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .cart-item-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .cart-item-title {
+        color: #2c3e50;
+        font-size: 1.2rem;
+        margin: 0 0 10px 0;
+    }
+
+    .cart-item-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 10px 0;
+    }
+
+    .info-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        display: block;
+        color: #2c3e50;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-top: 4px;
+    }
+
+    .remove-btn {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        width: fit-content;
+        margin-top: 10px;
+    }
+
+    .remove-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+    </style>
+</head>>
+<body>
+    <div class="cart-item">
+    <div class="cart-item-details">
+        <h3 class="cart-item-title">@Model.urunAd</h3>
+        <div class="cart-item-info">
+            <div class="quantity-section">
+                <span class="info-label">Adet:</span>
+                <span class="info-value">@Model.Adet</span>
+            </div>
+            <div class="price-section">
+                <span class="info-label">Birim Fiyat:</span>
+                <span class="info-value">@Convert.ToInt32((Model.ToplamFiyat/Model.Adet)) TL</span>
+            </div>
+            <div class="total-section">
+                <span class="info-label">Toplam:</span>
+                <span class="info-value">@Convert.ToInt32(Model.ToplamFiyat) TL</span>
+            </div>
+        </div>
+        <button class="remove-btn" onclick="removeFromCart(event,@Model.UrunKod)">
+            <i class="fas fa-trash"></i> Ürünü Sepetten Çıkar
+        </button>
+    </div>
+    </div>
+    <script>
+        async function removeFromCart(event,urunKod){
+            event.preventDefault();
+            window.location.href = `http://localhost:5173/TransactionPage/dellSepetUrun?urunKod=${urunKod}`;
+        }
+    </script>
+</body>
+</html>

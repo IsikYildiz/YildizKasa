@@ -1,0 +1,348 @@
+@{
+    Layout = "_Layout";
+}
+@model Urunler
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>@Model.UrunAd</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .product-header {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .product-image {
+            flex: 0 0 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .product-price {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-currency {
+            font-size: 1.4rem;
+            color: #666;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #6FA68F 0%, #5B8B74 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(111, 166, 143, 0.4);
+        }
+
+        .product-specs {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .product-specs h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .spec-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .spec-value {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+         .comments-section {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+             margin-top: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .rating-input {
+            width: 100px;
+            padding: 12px;
+            border: 2px solid #6FA68F;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .comment-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #6FA68F;
+            border-radius: 8px;
+            font-size: 16px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .comment-btn {
+            background: linear-gradient(135deg, #6FA68F 0%, #5B8B74 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+        .comment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(111, 166, 143, 0.4);
+        }
+        .delete-btn {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        .warning-text {
+            color: #dc3545;
+            background-color: #ffe5e8;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-card">
+            <div class="product-header">
+                <div class="product-image">
+                    <img src="@Model.UrunResim" alt="@Model.UrunAd">
+                </div>
+                <div class="product-right">
+                    <h2 class="product-title">@Model.UrunAd</h2>
+                    <p class="product-description">@Model.UrunTanitim</p>
+                    @if(Model.StokDurum<10){
+                        <p class="product-description">Stokta @Model.StokDurum adet kaldı!</p>
+                    }
+                    <div class="product-price">
+                        @Convert.ToInt32(@Model.ListeFiyat)<span class="price-currency">TL</span>
+                    </div>
+                    <a href="/TransactionPage/Cart">
+                    <button class="btn" onclick="updSepetUrun(event,@Model.UrunKod)">Sepete Ekle</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-specs">
+                <h3>Teknik Özellikler</h3>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Ekran Kartı</span>
+                        <span class="spec-value">@Model.EkranKarti</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">İşlemci</span>
+                        <span class="spec-value">@Model.Islemci</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">RAM</span>
+                        <span class="spec-value">@Model.Ram</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Depolama</span>
+                        <span class="spec-value">@Model.Depolama1</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">İşletim Sistemi</span>
+                        <span class="spec-value">@Model.IsletimSistemi</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Garanti</span>
+                        <span class="spec-value">@Model.Garanti yıl</span>
+                    </div>
+                    @if(@Model.KasaTipi == null)
+                    {
+                        <div class="spec-item">
+                            <span class="spec-label">Ekran Boyutu</span>
+                            <span class="spec-value">@Model.EkranBoyutu</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Çözünürlük</span>
+                            <span class="spec-value">@Model.Cozunurluk</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Ekran Yenileme Hızı</span>
+                            <span class="spec-value">@Model.EkranYenilemeHizi</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="spec-item">
+                            <span class="spec-label">Kasa Tipi</span>
+                            <span class="spec-value">@Model.KasaTipi</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="comments-section">
+    @{
+        string viewDataValue = ViewData["Yorum"] as string;
+        if(viewDataValue=="var"){
+            <button class="delete-btn" onclick="delYorum(@Model.UrunKod)">Yorumu Sil</button>
+        }
+        else if(viewDataValue=="noGiriş"){
+        }
+        else{
+            <div class="comment-form">
+                <label id="Warning" class="warning-text"></label>
+                <input id="Puan" type="number" class="rating-input" placeholder="Puan (1-5)" required>
+                <textarea id="Yorum" class="comment-input" placeholder="Yorumunuzu buraya yazın..." required></textarea>
+                <button class="comment-btn" onclick="sendYorum(@Model.UrunKod)">Yorumu Gönder</button>
+            </div>
+        }
+    }
+    @await Component.InvokeAsync("KullaniciYorumlar",@Model.UrunKod)
+    </div>
+    <script>
+    async function updSepetUrun(event, urunKod) {
+        event.preventDefault();
+        window.location.href = `http://localhost:5173/TransactionPage/updSepet?urunKod=${urunKod}`;
+    }
+
+    async function sendYorum(urunKod){
+        const puan = document.getElementById("Puan").value;
+        const yorum = document.getElementById("Yorum").value;
+        const warning = document.getElementById("Warning");
+
+        if(puan < 1 || puan > 5){
+            warning.style.display = 'block';
+            warning.innerHTML = 'Puan 1-5 arasında olmalıdır';
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5173/HomePage/sendYorum?UrunKod=${urunKod}&yorum=${yorum}&puan=${puan}`);
+            if(response.ok) {
+                location.reload();
+            }
+        } catch(error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function delYorum(urunKod){
+        try {
+            const response = await fetch(`http://localhost:5173/HomePage/delYorum?UrunKod=${urunKod}`);
+            if(response.ok) {
+                location.reload();
+            }
+        } catch(error) {
+            console.error('Error:', error);
+        }
+    }
+    </script>
+</body>
+</html>

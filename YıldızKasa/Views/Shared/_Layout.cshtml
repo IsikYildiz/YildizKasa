@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #4C4F78; 
+            color: rgb(255, 255, 255);
+            font-size: 16px;
+            height: 120px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #3A3D67;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 250px;
+            height: 85px;
+        }
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            max-width: 650px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .search-bar button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background-color: #9FC09F; 
+            border: none;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar button img {
+            width: 20px;
+            height: 20px;
+        }
+        .user-cart {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-cart div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-cart div img {
+            width: 45px;
+            height: 45px;
+        }
+        .user-cart div span {
+            font-size: 24px;
+            color:white;
+        }
+        .user-cart div a{
+            background-color: #3A3D67;
+            padding: 5px;
+            line-height: 0px;
+            align-items: center;
+            display: inline-flex;
+        }
+        a:link { 
+            text-decoration: none; 
+        } 
+        a:visited { 
+            text-decoration: none;
+        } 
+        a:hover { 
+            text-decoration: none; 
+        } 
+        a:active { 
+            text-decoration: none; 
+        }
+    </style>
+    <script>
+        async function findProduct(event){
+            event.preventDefault();
+
+            const search = document.getElementById("search").value;
+            window.location.href = `http://localhost:5173/HomePage/findUrun?productName=${search}`;
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <a href="/HomePage/index">
+            <img src="/css/Logo.jpg" alt="YıldızKasa" class="logo">
+            </a>
+        </div>
+        <div class="search-bar">
+            <input id="search" type="text" placeholder="Ara...">
+            <button onclick="findProduct(event)">
+            <img src="/css/Search.png" alt="Search">
+            </button>
+        </div>
+        <div class="user-cart">
+            <div>
+                @{
+                    var email = Context.Session.GetString("email");
+                    if(string.IsNullOrEmpty(email)){
+                        <a href="/LoginPage/signin">
+                        <img src="/css/User.png" alt="User">
+                        <span>Giriş Yap</span>
+                        </a>
+                    }
+                    else{
+                        <a href="/LoginPage/account">
+                        <img src="/css/User.png" alt="User">
+                        <span>Hesabım</span>
+                        </a>
+                    }
+                }
+            </div>
+            <div>
+                <a href="/TransactionPage/Cart">
+                    <img src="/css/Cart.png" alt="Cart">
+                    <span>Sepetim</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    @RenderBody()
+</body>
+</html>

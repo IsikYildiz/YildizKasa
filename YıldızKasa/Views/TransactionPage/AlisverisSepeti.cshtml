@@ -1,0 +1,155 @@
+@{
+    Layout = "_Layout";
+}
+@model SepetTam
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Alışveriş Sepeti</title>
+    <style>
+        :root {
+            --primary-color: #4D527F;
+            --accent-color: #6FA68F;
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --text-dark: #2c3e50;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 30px;
+        }
+
+        .cart-title {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .clear-cart {
+            color: #dc3545;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .clear-cart:hover {
+            background: #dc3545;
+            color: var(--white);
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-summary {
+            background: var(--gray-100);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: right;
+        }
+
+        .total-text {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(111, 166, 143, 0.4);
+        }
+
+        .warning-message {
+            color: #dc3545;
+            background: #ffe5e8;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cart-header">
+            <h1 class="cart-title">SEPETİM</h1>
+            <a href="/TransactionPage/delSepet" class="clear-cart">Sepeti Boşalt</a>
+        </div>
+
+        <div class="cart-items">
+            @foreach(var product in Model.Sepeturuns){
+                @Html.Partial("_SepetUrun",product)
+            }
+        </div>
+
+        <div class="cart-summary">
+            <div class="total-text">
+                Toplam (@Model.Sepets.UrunSayisi adet) @Convert.ToInt32(Model.Sepets.SepetFİyati) TL
+            </div>
+            <label id="Uyarı" class="warning-message"></label>
+            <button class="checkout-btn" onclick="payment()">Sipariş Ver</button>
+        </div>
+    </div>
+
+    <script>
+        async function payment() {
+            event.preventDefault();
+            const response = await fetch(`http://localhost:5173/TransactionPage/payment`);
+            const result = await response.json();
+            console.log(result);
+            const warningLabel = document.getElementById("Uyarı");
+            if(result) {
+                warningLabel.style.display = 'block';
+                warningLabel.innerHTML = 'En az bir tane adres ve kredi kartınız kayıtlı olmalı!';
+                return;
+            }
+            else if(@Model.Sepets.UrunSayisi < 1) {
+                warningLabel.style.display = 'block';
+                warningLabel.innerHTML = 'Sepetiniz boş!';
+                return;
+            }
+            window.location.href = "http://localhost:5173/TransactionPage/Siparis";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üye Ol</title>
+    <style>
+        body {
+            background-color: rgb(77, 82, 127);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;    
+            height: 100vh;
+        }
+        .register-container {
+            background-color: rgb(77, 82, 127);
+            border: 2px solid rgb(111, 166, 143);
+            border-radius: 10px;
+            padding: 40px;
+            width: 350px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;    /
+            height: 580px; /
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid rgb(111, 166, 143);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button {
+            background-color: rgb(111, 166, 143);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            align-self: center; 
+        }
+        .button:hover {
+            background-color: rgb(92, 138, 119);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            margin: 10px;
+        }
+        label{
+            color:red;
+        }
+        img{
+            width: 280px;
+            height: 130px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        async function signUp(event){
+            event.preventDefault();
+
+            const name = document.querySelector('[placeholder="Adınız"]').value;
+            const surname = document.querySelector('[placeholder="Soyadınız"]').value;
+            const email = document.querySelector('[placeholder="Email"]').value;
+            const password = document.querySelector('[placeholder="Şifre"]').value;
+            const passwordAgain = document.querySelector('[placeholder="Şifre Tekrar"]').value;
+            const warningLabel = document.getElementById("Uyarı");
+            hasNumber = /\d/;
+            const passwordResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${password}&which=sifre`);
+            const passwordExists = await passwordResponse.json();
+            const emailResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${email}&which=email`);
+            const emailExists = await emailResponse.json();
+            const emailValidResponse= await fetch(`http://localhost:5173/LoginPage/emailvalid?email=${email}`);
+            const emailValid = await emailValidResponse.json();
+            
+            if(hasNumber.test(name) || hasNumber.test(surname)){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Adınız veya soyadınız sayı içeremez.';
+                return;
+                
+            }
+            else if(name.length<1 || surname.length<1 || email.length<1){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Lütfen her yeri doldurunuz.';
+                return;
+            }
+            else if(password.length<10){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Şifreniz 10 dan az karakter içeriyor';
+                return;
+            }
+            else if(!(password===passwordAgain)){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Şifreler uyuşmuyor';
+                return;
+            }
+            else if(passwordExists){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Böyle bir şifre zaten var';
+                return;
+            }
+            else if(emailExists){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Bu email zaten kayıtlı';
+                return;
+            }
+            else if(!emailValid){
+                warningLabel.style.display='block';
+                warningLabel.innerHTML='Email geçersiz!';
+                return;
+            }
+            var jsonData={"ad":name,"soyad":surname,"email":email,"sifre":password}
+            fetch("http://localhost:5173/LoginPage/adduser",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData) 
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                if(result.message==="success"){
+                    window.location.href = "http://localhost:5173/LoginPage/signinfirst";
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div class="register-container">
+        <div><img src="/css/Logo.jpg"></div>
+        <label id="Uyarı" style="display: none;"></label>
+        <form>
+            <input for="name" type="text" class="input-field" placeholder="Adınız" required>
+            <input for="surname" type="text" class="input-field" placeholder="Soyadınız" required>
+            <input for="email" type="text" class="input-field" placeholder="Email" required>
+            <label><strong>Şifreniz en az 10 karakterden oluşmalıdır</strong></label>
+            <input for="password" type="password" class="input-field" placeholder="Şifre" required>
+            <input for="passwordAgain" type="password" class="input-field" placeholder="Şifre Tekrar" required>
+            <button class="button" onclick="signUp(event)">Üye Ol</button>
+        </form>
+    </div>
+</body>
+</html>

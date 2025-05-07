@@ -1,0 +1,75 @@
+@{
+    Layout = "_Layout";
+}
+@model List<Sipari>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .order-card {
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+        .order-card:hover {
+            transform: translateY(-5px);
+        }
+        .custom-bg {
+            background-color: #4D527F;
+        }
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .status-pending { background-color: #ffeeba; color: #856404; }
+        .status-shipped { background-color: #d4edda; color: #155724; }
+        .status-delivered { background-color: #cce5ff; color: #004085; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid custom-bg min-vh-100 py-5">
+        <div class="container">
+            <h2 class="text-white mb-4">Siparişlerim</h2>
+            <div class="row">
+                @foreach(var siparis in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card order-card shadow">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted">Sipariş Tarihi</span>
+                                    <strong>@siparis.SiparisTarihi.ToString("dd.MM.yyyy")</strong>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="text-muted mb-2">Teslimat Adresi</h6>
+                                    <p class="mb-0">@siparis.GonderilenAdres</p>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted">Toplam Tutar</span>
+                                    <h5 class="mb-0 text-primary">@Convert.ToInt32(siparis.SonFiyat) ₺</h5>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <span class="status-badge @(siparis.SiparisDurumu == "Beklemede" ? "status-pending" : 
+                                                              siparis.SiparisDurumu == "Kargoda" ? "status-shipped" : 
+                                                              "status-delivered")">
+                                        <i class="fas @(siparis.SiparisDurumu == "Beklemede" ? "fa-clock" : 
+                                                      siparis.SiparisDurumu == "Kargoda" ? "fa-truck" : 
+                                                      "fa-check-circle") me-2"></i>
+                                        @siparis.SiparisDurumu
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

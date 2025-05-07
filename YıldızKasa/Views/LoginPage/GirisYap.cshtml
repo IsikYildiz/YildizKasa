@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Girişi</title>
+    <style>
+        body {
+            background-color: rgb(77, 82, 127);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: rgb(77, 82, 127);
+            border: 2px solid rgb(111, 166, 143);
+            border-radius: 10px;
+            padding: 20px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            margin-top: 15px;
+            border: 2px solid rgb(111, 166, 143);
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .checkbox-container input {
+            margin-right: 5px;
+        }
+        .button {
+            background-color: rgb(111, 166, 143);
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 20px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .button:hover {
+            background-color: rgb(92, 138, 119);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        img{
+            width: 350px;
+            height: 175px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        label{
+            color:red;
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        async function signIn(event){
+            event.preventDefault();
+            const email = document.querySelector('[placeholder="Email"]').value;
+            const password = document.querySelector('[placeholder="Şifre"]').value;
+            const passwordResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${password}&which=sifre`);
+            const passwordExists = await passwordResponse.json();
+            const emailResponse = await fetch(`http://localhost:5173/LoginPage/control?toControl=${email}&which=email`);
+            const emailExists = await emailResponse.json();
+            if(email.length<1 || password.length<1){
+                document.getElementById("Warning").innerHTML="Email veya şifreniz yanlış";
+                return;
+            }
+            else if(passwordExists && emailExists){
+                await fetch(`http://localhost:5173/HomePage/signed?email=${email}`);
+                window.location.href = 'http://localhost:5173/HomePage/Index';
+            }
+            else{
+                document.getElementById("Warning").innerHTML="Email veya şifreniz yanlış";
+                return;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <div><img src="/css/Logo.jpg"></div>
+        <form>
+            <label id="Warning">@ViewData["Uye"]</label>
+            <input for="email" type="text" class="input-field" placeholder="Email" required>
+            <input for="password" type="password" class="input-field" placeholder="Şifre" required>
+            <button type="submit" class="button" onclick="signIn(event)">Giriş Yap</button>
+        </form>
+        <form method="get" action="/LoginPage/signup">
+        <button type="submit" class="button">Üye OL</button>
+        </form>
+    </div>
+</body>
+</html>

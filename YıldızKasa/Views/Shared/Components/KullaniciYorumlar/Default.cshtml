@@ -1,0 +1,165 @@
+@model List<Yorum>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Yorum Alanı</title>
+  <style>
+    :root {
+      --page-bg: #3A3D67;         /* Tüm sayfa arka planı */
+      --text-color: #ffffff;      /* Ana metin rengi */
+      --secondary-text: #cccccc;  /* İkincil metin rengi */
+
+      --comment-container-bg: #3A3D67; /* Yorum kutusu arka planı */
+      --comment-bubble-bg: #4B4D7E;    /* Yorum metninin bulunduğu kutucuk rengi */
+      --bubble-border: #5a5c99;        /* Yorum kutucuğunun kenar rengi */
+      --star-color: #9FC09F;           /* Yıldız rengi */
+    }
+
+    /* Sayfa genel ayarları */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: var(--page-bg);
+      color: var(--text-color);
+      padding: 20px; 
+    }
+
+    /* Yorum container */
+    .comment-container {
+      max-width: 1200px;
+      margin: 0 auto; /* Ortalayalım */
+      background-color: var(--comment-container-bg);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* (örnek: "Yorumlar") */
+    .comment-title {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    /* Birden fazla yorumun her biri */
+    .comment-wrapper {
+      margin-bottom: 20px;
+    }
+
+    /* Yorum başlığı: avatar + yıldız + tarih/kullanıcı bilgisi */
+    .comment-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    /* Avatar alanı */
+    .avatar-wrapper {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      margin-right: 16px;
+    }
+    .avatar {
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .avatar img{
+      width: 75px;
+      height: 75px;
+      padding-left: 10px;
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Puanlama (yıldız) alanı */
+    .stars {
+      color: var(--star-color);
+      margin-right: 10px;
+      margin-left: 3px;
+    }
+
+    /* Tarih, kullanıcı adı vb. meta bilgisi */
+    .comment-meta {
+      color: var(--secondary-text);
+      font-size: 1rem;
+      margin-left: 5px;
+      margin: 2px;
+      }
+
+    /* Yorum metni kutusu */
+    .comment-bubble {
+      background-color: var(--comment-bubble-bg);
+      border: 1px solid var(--bubble-border);
+      border-radius: 6px;
+      padding: 16px;
+      position: relative;
+    }
+    .comment-bubble::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: -8px;
+      width: 8px;
+      height: 8px;
+      background-color: var(--comment-bubble-bg);
+      border-left: 1px solid var(--bubble-border);
+      border-top: 1px solid var(--bubble-border);
+      transform: rotate(-45deg);
+    }
+    .comment-text {
+      color: #ffffff;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Yorum alanı -->
+  <div class="comment-container">
+    <div class="comment-title">Yorumlar</div>
+
+    @foreach(var yorum in Model){
+    <div class="comment-wrapper">
+      <div class="comment-header">
+        <div class="avatar-wrapper">
+          <div class="avatar"><img src="/css/User.png" alt="Avatar bulunamadı"></div>
+        </div>
+        <div>
+          @{
+            var puan="";
+            for(int i=0;i<@yorum.Puan;i++){
+              puan=puan+"⭐";
+            }
+            <div class="stars">@puan</div>
+          }
+          <div class="comment-meta">@yorum.KullaniciAd</div>
+        </div>
+      </div>
+      <div class="comment-bubble">
+        <div class="comment-text">
+          @yorum.Yorum1
+        </div>
+      </div>
+    </div>   
+    }
+
+  </div>
+</body>
+</html>

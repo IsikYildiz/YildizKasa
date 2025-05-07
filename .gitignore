@@ -1,0 +1,23 @@
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+obj/
+bin/
+appsettings.json
+.vscode/
+launch.json
+key.txt
+__pycache__/
+.env
+.sonarqube/
+__init__.py
