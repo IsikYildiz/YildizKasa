@@ -52,3 +52,5 @@
 - **ORM:** Entity Framework (for CRUD operations)  
 - **Payment Processing:** Node.js API (communicates via SOAP)  
 - **Email Validation:** External API via REST
+
+---
