@@ -1,7 +1,7 @@
 # YıldızKasa - E-Ticaret Bilgisayar Mağazası / E-Commerce Computer Store
 
 ## Proje Ekibi / Project Team
-**Işık Yıldız**, **Hasan Yıldız**, **Selda Erdem**
+**Işık Yıldız**, **Hasan Yıldız**
 
 ---
 
